@@ -14,6 +14,10 @@ prjdir = os.path.dirname(__file__)
 def read(filename):
     return open(os.path.join(prjdir, filename)).read()
 
+if sys.platform.startswith("win"):
+    compilation_flags = ['/std:c++latest']
+else:
+    compilation_flags = ['-std=c++11', '-Wcpp']
 
 extra_link_args = []
 libraries = []
@@ -29,7 +33,7 @@ setup(
     ext_modules=[Extension("eif",
                  sources=["_eif.pyx", "eif.cxx"],
                  include_dirs=[numpy.get_include()],
-                 extra_compile_args=['-std=c++11', '-Wcpp'],
+                 extra_compile_args=['compilation_flags'],
                  language="c++")],
     scripts=[],
     py_modules=['eif_old', 'version'],
